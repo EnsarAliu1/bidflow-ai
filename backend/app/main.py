@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.api.tenders import router as tenders_router
 
 app = FastAPI()
 
@@ -9,3 +10,6 @@ def health_check() -> dict[str, str]:
         "status": "ok",
         "service": "bidflow-api"
     }
+
+
+app.include_router(tenders_router)
