@@ -2,29 +2,43 @@
 
 Backend built with Python and FastAPI.
 
+## Requirements
+
+- Python 3.10 or newer
+- Bash terminal (Git Bash on Windows)
+
 ## Run the backend
 
-From the project root, run in Bash:
+From the project root:
 
 ```bash
 cd backend
 python -m venv .venv
 ```
 
-Activate the virtual environment using the command for your system:
+Activate the virtual environment with the command for your system.
+
+**Git Bash on Windows:**
 
 ```bash
-# Git Bash on Windows
 source .venv/Scripts/activate
+```
 
-# Linux / macOS
+**Linux / macOS:**
+
+```bash
 source .venv/bin/activate
 ```
 
-Install dependencies and start the server:
+Install the backend and its dependencies from `pyproject.toml`:
 
 ```bash
-python -m pip install fastapi "uvicorn[standard]"
+python -m pip install -e .
+```
+
+Start the development server:
+
+```bash
 python -m uvicorn app.main:app --reload
 ```
 
