@@ -34,10 +34,10 @@ class Tender(Base):
 
     deadline: Mapped[date] = mapped_column(
         Date,
-        nullable=True
+        nullable=False
     )
 
-    estimated_budget: Mapped[int] = mapped_column(
+    estimated_budget: Mapped[int | None] = mapped_column(
         BigInteger,
         nullable=True,
     )
