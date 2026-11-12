@@ -2,7 +2,7 @@ from datetime import date
 from uuid import UUID
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class TenderCreate(BaseModel):
@@ -15,3 +15,4 @@ class TenderCreate(BaseModel):
 class TenderResponse(TenderCreate):
     id: UUID
     status: Literal["draft"]
+    model_config = ConfigDict(from_attributes=True)
