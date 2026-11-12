@@ -1,22 +1,30 @@
-from uuid import UUID, uuid4
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from app.schemas.tender import TenderCreate, TenderResponse
-
-_tenders: dict[UUID, TenderResponse] = {}
+from app.models.tender import Tender
+from app.schemas.tender import TenderCreate
 
 
 class TenderService:
-    def create_tender(self, data: TenderCreate) -> TenderResponse:
-        tender_id = uuid4()
 
-        tender = TenderResponse(
+    def __init__(self, db: Session):
+        self.db = db
+
+    def create_tender(self, data: TenderCreate) -> Tender:
+        tender = Tender(
             **data.model_dump(),
-            id=tender_id,
             status="draft",
         )
 
-        _tenders[tender_id] = tender
+        try:
+            self.db.add(tender)
+            self.db.commit()
+        except Exception:
+            self.db.rollback()
+            raise
+
+        self.db.refresh(tender)
         return tender
 
-    def list_tenders(self) -> list[TenderResponse]:
-        return list(_tenders.values())
+    def list_tenders(self) -> list[Tender]:
+        return list(self.db.scalars(select(Tender)).all())
