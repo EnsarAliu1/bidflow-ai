@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Depends
-from app.schemas.tender import TenderResponse, TenderCreate, TenderUpdate, TenderStatus
+from app.schemas.tender import TenderResponse, TenderCreate, TenderStatusUpdate, TenderUpdate, TenderStatus
 from app.services.tender_service import TenderService
 
 from typing import Annotated
@@ -72,11 +72,14 @@ def update_tender(
 )
 def update_tender_status(
     tender_id: UUID,
-    target: TenderStatus,
+    data: TenderStatusUpdate,
     db: Annotated[Session, Depends(get_db)],
 ):
     service = TenderService(db)
-    return service.update_status(tender_id, target)
+    return service.update_status(
+        tender_id,
+        data.status,
+    )
 
 
 @router.delete(

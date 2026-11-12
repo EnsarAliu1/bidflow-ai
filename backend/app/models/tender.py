@@ -55,6 +55,6 @@ class Tender(Base):
         ),
         CheckConstraint(
             "status IN ('draft', 'in_review', 'ready', 'submitted', 'won', 'lost')",
-            name="ck_tenders_draft_status_phase",
+            name="ck_tenders_valid_status",
         ),
     )
