@@ -33,17 +33,19 @@ class Tender(Base):
     )
 
     deadline: Mapped[date] = mapped_column(
+        Date,
         nullable=True
     )
 
     estimated_budget: Mapped[int] = mapped_column(
         BigInteger,
-        nullable=False,
+        nullable=True,
     )
 
     status: Mapped[str] = mapped_column(
+        String(20),
         default="draft",
-        nullable=False
+        nullable=False,
     )
 
     __table_args__ = (
