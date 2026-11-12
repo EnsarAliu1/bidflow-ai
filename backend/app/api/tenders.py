@@ -2,7 +2,7 @@ from fastapi import APIRouter, status
 from app.schemas.tender import TenderResponse, TenderCreate
 from app.services.tender_service import TenderService
 
-tender_create = TenderService()
+tender_service = TenderService()
 
 router = APIRouter(
     prefix="/api/v1/tenders",
@@ -16,7 +16,7 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
 )
 def create_tender(data: TenderCreate):
-    tender = tender_create.create_tender(data)
+    tender = tender_service.create_tender(data)
     return tender
 
 
@@ -26,5 +26,5 @@ def create_tender(data: TenderCreate):
     status_code=status.HTTP_200_OK
 )
 def list_tenders():
-    tenders = tender_create.list_tenders()
+    tenders = tender_service.list_tenders()
     return tenders
