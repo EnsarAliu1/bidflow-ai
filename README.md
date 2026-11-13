@@ -1,12 +1,13 @@
 # BidFlow AI
 
-Backend built with Python and FastAPI.
+Tender management application with a Python/FastAPI backend and a Next.js frontend.
 
 ## Requirements
 
 - Python 3.10 or newer
 - Bash terminal (Git Bash on Windows)
 - Docker with Docker Compose (Docker Desktop on Windows)
+- Node.js 20.9 or newer and npm (for the frontend)
 
 ## Database setup
 
@@ -102,6 +103,66 @@ Expected health check response:
 ```
 
 Press `Ctrl+C` to stop the server.
+
+## Frontend setup
+
+Keep PostgreSQL and the backend running as described above. In a separate
+terminal, start from the project root:
+
+```bash
+cd frontend
+npm ci
+```
+
+Create `frontend/.env.local` from the included template only if you do not
+already have this file:
+
+```bash
+cp -n .env.example .env.local
+```
+
+For PowerShell, use this command instead:
+
+```powershell
+if (!(Test-Path .env.local)) { Copy-Item .env.example .env.local }
+```
+
+The frontend environment file should contain:
+
+```dotenv
+API_BASE_URL=http://127.0.0.1:8000/api/v1
+```
+
+Include `/api/v1` and omit the trailing slash: the API client appends `/tenders`.
+This variable is read on the server; it does not need a `NEXT_PUBLIC_` prefix.
+The frontend uses its own `.env.local`, separate from the project-root database
+`.env`. Restart the frontend development server after changing its environment.
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000 (or the URL printed in the terminal). The dashboard
+loads tender statistics and the tender table from the backend. An empty database
+shows zero counts and "No tenders yet"; a failed API request shows an error state.
+
+If tenders cannot load, check that PostgreSQL and the backend are running, that
+migrations have been applied, and that http://127.0.0.1:8000/api/v1/tenders returns
+a JSON array. Then retry in the dashboard.
+
+Available checks and production commands, run from `frontend/`:
+
+```bash
+npm run lint
+npm run build
+npm run start
+```
+
+`npm run start` serves the production build after `npm run build` completes.
+Keep the backend available when running the application. Press `Ctrl+C` in the
+frontend terminal to stop its server.
 
 ## Database migrations
 
